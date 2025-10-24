@@ -9,8 +9,8 @@ st.title("🌿 Sistem Pencarian Komoditas Domestik & Ekspor")
 st.write("Gunakan tab di bawah ini untuk melihat data **domestik** dan **ekspor**.")
 
 # === Lokasi file ===
-file_domestik = r"D:\PEKERJAAN\uji1.txt"
-file_ekspor = r"C:\Users\Hype G12\Downloads\bahanekspor.txt"
+file_domestik = "uji1.txt"
+file_ekspor = "bahanekspor.txt"
 
 # === Tab utama ===
 tab1, tab2 = st.tabs(["🏠 Domestik", "🚢 Ekspor"])
@@ -190,3 +190,4 @@ with tab2:
                 with col4:
                     st.markdown("### 🏢 Satpel")
                     st.dataframe(freq_satpel, use_container_width=True)
+

@@ -9,7 +9,7 @@ st.title("🌿 Sistem Pencarian Komoditas Domestik & Ekspor")
 st.write("Gunakan tab di bawah ini untuk melihat data **domestik** dan **ekspor**.")
 
 # === Lokasi file ===
-file_domestik = "uji1.txt"
+file_domestik = "ujidokel.txt"
 file_ekspor = "bahanekspor.txt"
 
 # === Tab utama ===
@@ -21,7 +21,7 @@ tab1, tab2 = st.tabs(["🏠 Domestik", "🚢 Ekspor"])
 with tab1:
     st.subheader("📦 Pencarian Daerah Tujuan Berdasarkan Komoditas")
     st.write("""
-    Masukkan atau pilih **komoditas** untuk melihat daftar **daerah tujuan**, **provinsi**, dan **pulau** 
+    Masukkan atau pilih **komoditas** untuk melihat daftar **daerah tujuan**, **provinsi**, dan **pulau**
     tanpa duplikasi, beserta **frekuensi kemunculannya**.  
     Gunakan filter **Satpel** untuk membatasi data.
     """)
@@ -87,14 +87,31 @@ with tab1:
                         st.markdown("### 🌴 Pulau")
                         st.dataframe(freq_pulau, use_container_width=True)
 
-                    # Unduh hasil
+                    # === Tambahan: tampilkan kolom Klasifikasi, Nama Tercetak, dan Kode HS ===
+                    st.markdown("### 🧾 Data Klasifikasi Komoditas")
+                    tambahan_cols = ['Klasifikasi', 'Nama Tercetak', 'Kode HS']
+
+                    for col in tambahan_cols:
+                        if col not in df_filtered.columns:
+                            df_filtered[col] = "-"  # isi dengan strip kalau kolom tidak ada
+
+                    kolom_tampil = ['Komoditas'] + [c for c in tambahan_cols if c in df_filtered.columns]
+                    st.dataframe(
+                        df_filtered[kolom_tampil].drop_duplicates().reset_index(drop=True),
+                        use_container_width=True
+                    )
+
+                    # === Unduh hasil lengkap (termasuk kolom tambahan) ===
                     combined = {
                         "Daerah Tujuan": freq_tujuan,
                         "Provinsi": freq_prov,
                         "Pulau": freq_pulau
                     }
-                    csv = pd.concat(combined.values(), axis=1)
-                    csv_data = csv.to_csv(index=False).encode('utf-8')
+                    csv_ringkasan = pd.concat(combined.values(), axis=1)
+                    csv_klasifikasi = df_filtered[kolom_tampil].drop_duplicates()
+                    csv_final = pd.concat([csv_ringkasan, csv_klasifikasi], axis=1)
+                    csv_data = csv_final.to_csv(index=False).encode('utf-8')
+
                     st.download_button(
                         label="💾 Unduh hasil sebagai CSV",
                         data=csv_data,
@@ -190,4 +207,3 @@ with tab2:
                 with col4:
                     st.markdown("### 🏢 Satpel")
                     st.dataframe(freq_satpel, use_container_width=True)
-

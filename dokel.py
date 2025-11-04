@@ -16,7 +16,7 @@ file_ekspor = "bahanekspor.txt"
 tab1, tab2 = st.tabs(["🏠 Domestik", "🚢 Ekspor"])
 
 # ==========================================================
-# 🏠 TAB 1 - DOMESTIK
+# 🏠 TAB 1 - DOKEL
 # ==========================================================
 with tab1:
     st.subheader("📦 Pencarian Daerah Tujuan Berdasarkan Komoditas")
@@ -207,3 +207,4 @@ with tab2:
                 with col4:
                     st.markdown("### 🏢 Satpel")
                     st.dataframe(freq_satpel, use_container_width=True)
+
